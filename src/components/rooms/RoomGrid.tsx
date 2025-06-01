@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
-import { Room, RoomStatus, RoomType } from  '../types';
 
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
+import { Card, CardBody, CardHeader, Tab, Tabs } from '@nextui-org/react';
+import { Room, RoomStatus, RoomType } from '../../types';
 
 interface RoomGridProps {
   rooms: Room[];
@@ -64,19 +65,17 @@ const RoomGrid: React.FC<RoomGridProps> = ({ rooms, onRoomClick }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Mapa de Habitaciones</CardTitle>
-        <CardDescription>Vista de todas las habitaciones por piso</CardDescription>
+        <h1>Mapa de Habitaciones</h1>
+        <p>Vista de todas las habitaciones por piso</p>
       </CardHeader>
-      <CardContent>
-        <Tabs value={activeFloor} onValueChange={setActiveFloor}>
-          <TabsList className="mb-4">
-            <TabsTrigger value="all">Todos</TabsTrigger>
+      <CardBody>
+        <Tabs aria-label="Tabs variants" value={activeFloor} onValueChange={setActiveFloor}>
+          <Tab value="all">Todos</Tab>
             {floorNumbers.map((floor) => (
-              <TabsTrigger key={floor} value={floor}>
+              <Tab key={floor} value={floor}>
                 Piso {floor}
-              </TabsTrigger>
+              </Tab>
             ))}
-          </TabsList>
           
           <div className="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
             {filteredRooms.map((room) => (
@@ -84,7 +83,7 @@ const RoomGrid: React.FC<RoomGridProps> = ({ rooms, onRoomClick }) => {
             ))}
           </div>
         </Tabs>
-      </CardContent>
+      </CardBody>
     </Card>
   );
 };
