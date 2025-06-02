@@ -10,7 +10,7 @@ import { IoSearchCircleOutline, IoChatbubbleEllipsesOutline, IoHelpCircleOutline
 
 export const NavbarWrapper = () => {
   return (
-    <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+    <div className="flex overflow-y-auto overflow-x-hidden relative flex-col flex-1">
       <Navbar
         isBordered
         className="w-full"
@@ -37,10 +37,10 @@ export const NavbarWrapper = () => {
           justify="end"
           className="w-fit data-[justify=end]:flex-grow-0"
         >
-          <div className="flex items-center gap-2 max-md:hidden">
+          {/* <div className="flex gap-2 items-center max-md:hidden">
             <IoChatbubbleEllipsesOutline />
             <span>Feedback?</span>
-          </div>
+          </div> */}
 
           <NotificationsDropdown />
 

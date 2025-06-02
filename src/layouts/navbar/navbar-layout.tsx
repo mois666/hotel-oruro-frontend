@@ -107,10 +107,10 @@ export const NavbarLayout = () => {
             justify="end"
             className="w-fit data-[justify=end]:flex-grow-0"
           >
-            <div className="flex gap-2 items-center max-md:hidden">
+            {/* <div className="flex gap-2 items-center max-md:hidden">
               <RiMegaphoneFill className="text-default-500" size={20} />
               <span>Feedback?</span>
-            </div>
+            </div> */}
 
             {/* <NotificationsDropdown /> */}
 

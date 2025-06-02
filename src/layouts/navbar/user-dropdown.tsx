@@ -67,9 +67,9 @@ export const UserDropdown = () => {
           Cerrar sesión
           
         </DropdownItem>
-        <DropdownItem key='help_and_feedback'>
+        {/* <DropdownItem key='help_and_feedback'>
           <DarkModeSwitch />
-        </DropdownItem>
+        </DropdownItem> */}
       </DropdownMenu>
     </Dropdown>
   );

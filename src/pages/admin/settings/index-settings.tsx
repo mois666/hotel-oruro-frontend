@@ -81,8 +81,8 @@ export const SettingsPage = () => {
 
   return (
     <div className="px-4 sm:px-6 md:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="md:col-span-2 w-full mx-auto max-w-md">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="mx-auto w-full max-w-md md:col-span-2">
           {
             settings.map((setting) => (
 
@@ -100,13 +100,13 @@ export const SettingsPage = () => {
                       type="text"
                       id="settingName"
                       name="settingName"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       defaultValue={setting.name}
                     />
                   </div>
 
-                  <div className='flex flex-col md:flex-row gap-2'>
-                    <div className="flex items-center gap-2">
+                  <div className='flex flex-col gap-2 md:flex-row'>
+                    <div className="flex gap-2 items-center">
                       <label
                         htmlFor="logo"
                         className="block text-sm font-medium text-gray-700"
@@ -116,13 +116,13 @@ export const SettingsPage = () => {
                       <Input type="file" id="logo" className="hidden" onChange={handleImage} name="logo" accept="image/*" />
                       <label
                         htmlFor="logo"
-                        className="cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="px-3 py-2 text-sm font-medium leading-4 text-gray-700 bg-white rounded-md border border-gray-300 shadow-sm cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       >
                         Seleccionar archivo
                       </label>
                     </div>
                     <div className="mt-1">
-                      <img src={preImage ? preImage : setting?.logo ? setting.logo : 'https://via.placeholder.com/200x200'} alt="Imagen del carrusel" className="w-20 h-20 object-cover" />
+                      <img src={preImage ? preImage : setting?.logo ? setting.logo : 'https://via.placeholder.com/200x200'} alt="Imagen del carrusel" className="object-cover w-20 h-20" />
                     </div>
                   </div>
 
@@ -137,7 +137,7 @@ export const SettingsPage = () => {
                       type="text"
                       id="description"
                       name="description"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       defaultValue={setting.description}
                     />
                   </div>
@@ -152,7 +152,7 @@ export const SettingsPage = () => {
                     <Textarea
                       id="header"
                       name="header"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       defaultValue={setting.header}
                     />
                   </div>
@@ -169,7 +169,7 @@ export const SettingsPage = () => {
                       id="contacts"
                       name="contacts"
                       defaultValue={setting.contact}
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
 
@@ -185,7 +185,7 @@ export const SettingsPage = () => {
                       id="support"
                       name="support"
                       defaultValue={setting.support}
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
 
@@ -200,7 +200,7 @@ export const SettingsPage = () => {
                       id="social"
                       name="social"
                       defaultValue={setting.social}
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
 
@@ -215,7 +215,7 @@ export const SettingsPage = () => {
                       id="footer"
                       name="footer"
                       defaultValue={setting.footer}
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
 

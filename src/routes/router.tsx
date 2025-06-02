@@ -23,6 +23,7 @@ import {
   IndexRooms,
 
 } from "../pages/admin";
+import GuestRegistration from "../pages/admin/clients/GuestRegistration";
 
 
 
@@ -78,6 +79,14 @@ const router = createBrowserRouter([
             element: (
               <ProtectedRoute roles={["admin"]}>
                 <HomeIndex />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "registro",
+            element: (
+              <ProtectedRoute roles={["admin"]}>
+                <GuestRegistration />
               </ProtectedRoute>
             ),
           },
