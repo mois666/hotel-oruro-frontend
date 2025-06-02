@@ -148,7 +148,7 @@ const router = createBrowserRouter([
           },
 
           {
-            path: "settings",
+            path: "ajustes",
             element: (
               <ProtectedRoute roles={["admin"]}>
                 <SettingsPage />

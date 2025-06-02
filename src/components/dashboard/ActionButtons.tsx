@@ -13,20 +13,20 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ className }) => {
     <Card className={className}>
       <CardBody className="p-4">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <Button as="button" variant="solid" className="bg-[#2563EB] text-white hover:bg-[#1E40AF] h-16">
-            <Link to="/registro">
+          <Button as="button" variant="solid" className="border-[##9CA3AF] text-[#0a0a0a] hover:bg-[#2563EB] h-16">
+            <Link to="/admin/registro">
               <span className="mr-2 text-lg">📝</span>
               <span>Registrar Huésped</span>
             </Link>
           </Button>
-          <Button as="button" variant="solid" className="border-[#3B82F6] text-[#3B82F6] hover:bg-[#EFF6FF] h-16">
-            <Link to="/habitaciones">
+          <Button as="button" variant="solid" className="border-[##9CA3AF] text-[#0a0a0a] hover:bg-[#2563EB] h-16">
+            <Link to="/admin/habitaciones">
               <span className="mr-2 text-lg">🏨</span>
               <span>Ver Habitaciones</span>
             </Link>
           </Button>
-          <Button as="button" variant="solid" className="border-[#9CA3AF] text-[#666666] hover:bg-gray-50 h-16">
-            <Link to="/huespedes">
+          <Button as="button" variant="solid" className="border-[##9CA3AF] text-[#0a0a0a] hover:bg-[#2563EB] h-16">
+            <Link to="/admin/huespedes">
               <span className="mr-2 text-lg">📊</span>
               <span>Ver Reportes</span>
             </Link>

@@ -50,14 +50,15 @@ const storeApi: StateCreator<SettingState & Actions> = (set, get) => ({
 
   getSettings: async (id, token) => {
     try {
-      const { data } = await appDB.get<ISettingsResponse>(`/settings/${id}`, {
+      /* const { data } = await appDB.get<ISettingsResponse>(`/settings/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      });
+      }); */
+      const data = company;
 
-      if (typeof data.setting === 'object' && data.setting !== null) {
-        const settingsArray = Array.of(data.setting);
+      if (typeof data === 'object' && data !== null) {
+        const settingsArray = Array.of(data);
 
         set(() => ({
           setting: settingsArray,
