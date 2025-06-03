@@ -11,11 +11,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ roles, permissions, chi
   const { user, hasPermission, hasRole } = useAuthStore();
 
   if (!user) {
-    return <Navigate to="/" />;
+    return <Navigate to="/admin" />;
   }
 
   if (roles && !roles.some((role) => hasRole(role))) {
-    return <Navigate to="/" />; // /home
+    return <Navigate to="/admin" />; // /home
   }
 
   if (permissions && !permissions.some((permission) => hasPermission(permission))) {

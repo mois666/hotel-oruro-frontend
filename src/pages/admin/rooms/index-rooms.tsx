@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import RoomGrid from "../../../components/rooms/RoomGrid";
 import { Room } from "../../../types";
 import { rooms as mockRooms } from "../../../data/mockData";
+import { ModalRooms } from "../../../components/rooms/modal-rooms";
 
 export const IndexRooms = () => {
   const [rooms] = useState<Room[]>(mockRooms);
@@ -33,6 +34,14 @@ export const IndexRooms = () => {
           <RoomGrid rooms={rooms} onRoomClick={handleRoomClick} />
         </div>
       </div>
+
+      {selectedRoom && (
+        <ModalRooms
+          isOpen={!!selectedRoom}
+          onClose={handleCloseDialog}
+          room={selectedRoom}
+        />
+      )}
     </>
   );
 };

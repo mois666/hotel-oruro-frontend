@@ -48,7 +48,7 @@ export const IndexClients = () => {
         { name: 'NOMBRE', uid: 'name' },
         { name: 'APELLIDO', uid: 'last_name' },
         { name: 'CI', uid: 'ci' },
-        { name: 'ACCIONES', uid: 'actions' }
+        { name: 'ACCIONES', uid: 'actions-ed' }
     ];
     const fields = [
         { name: 'name', label: 'Nombre', type: 'text', placeholder: 'Nombre del cliente' },
