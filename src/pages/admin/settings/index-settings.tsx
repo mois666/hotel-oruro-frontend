@@ -97,14 +97,14 @@ export const SettingsPage = () => {
             <Tab key="Tarifas y Descuentos" title="Tarifas y Descuentos">
               <div className="grid grid-cols-2 gap-4">
                 <Card>
-                  <CardBody>
+                  <CardBody className="gap-2">
                     <h2 className="text-xl font-bold">Tarifas de Habitaciones</h2>
                     <form>
-                      <p>Habitacion Simple(Bs/noche)</p>
+                      <p className="mb-2 text-sm">Habitacion Simple(Bs/noche)</p>
                       <Input type="text" />
-                      <p>Habitacion Doble(Bs/noche)</p>
+                      <p className="mb-2 text-sm">Habitacion Doble(Bs/noche)</p>
                       <Input type="text" />
-                      <p>Suite(Bs/noche)</p>
+                      <p className="mb-2 text-sm">Suite(Bs/noche)</p>
                       <Input type="text" />
                       <Button className="mt-4 w-full border-[##9CA3AF] text-[#0a0a0a] hover:bg-[#2563EB] " type="submit" >
                         Guardar Cambios
@@ -113,14 +113,14 @@ export const SettingsPage = () => {
                   </CardBody>
                 </Card>
                 <Card>
-                  <CardBody>
+                  <CardBody className="gap-2">
                     <h2 className="text-xl font-bold">Configuración de Descuentos</h2>
                     <form>
-                      <p>Descuento Estándar (%)</p>
+                      <p className="mb-2 text-sm">Descuento Estándar (%)</p>
                       <Input type="text" />
-                      <p>Descuento para Grupos (%)</p>
+                      <p className="mb-2 text-sm">Descuento para Grupos (%)</p>
                       <Input type="text" />
-                      <p>Descuento Estancia Prolongada (%)</p>
+                      <p className="mb-2 text-sm">Descuento Estancia Prolongada (%)</p>
                       <Input type="text" />
                       <Button className="mt-4 w-full border-[##9CA3AF] text-[#0a0a0a] hover:bg-[#2563EB] " type="submit">
                         Guardar Cambios

@@ -9,6 +9,7 @@ import { FaBox, FaHouse, FaStore, FaUsers } from 'react-icons/fa6'
 import { Navigate, useLocation, useParams } from "react-router-dom";
 import { useAuthStore } from "../../stores";
 import { TbCategoryPlus } from "react-icons/tb";
+import { FaCog } from "react-icons/fa";
 
 export const SidebarLayout = () => {
   const { id } = useParams();
@@ -51,20 +52,20 @@ export const SidebarLayout = () => {
               />
               <SidebarItem
                 title="Huéspedes" // @ts-ignore-line spellcheck
-                icon={<FaStore className="text-default-500" size={20} />}
                 isActive={pathname === "/admin/huespedes" || pathname === `/admin/huespedes/${id}`}
+                icon={<FaUsers className="text-default-500" size={20} />}
                 href="/admin/huespedes"
               />
-              <SidebarItem
+              {/* <SidebarItem
                 isActive={pathname === "/admin/users" || pathname === `/admin/users/${id}`}
                 title="Usuarios"
                 icon={<FaUsers className="text-default-500" size={20} />}
                 href="/admin/users"
-              />
+              /> */}
                <SidebarItem
                 isActive={pathname === "/admin/habitaciones" || pathname === `/admin/habitaciones/${id}`}
                 title="Habitaciones"
-                icon={<FaUsers className="text-default-500" size={20} />}
+                icon={<FaStore className="text-default-500" size={20} />}
                 href="/admin/habitaciones"
               />
 
@@ -72,7 +73,7 @@ export const SidebarLayout = () => {
               <SidebarItem
                 isActive={pathname === "/admin/ajustes" || pathname === `/admin/ajustes/${id}`}
                 title="Ajustes"
-                icon={<TbCategoryPlus className="text-default-500" size={20} />}
+                icon={<FaCog className="text-default-500" size={20} />}
                 href="/admin/ajustes"
               />
               
