@@ -41,7 +41,7 @@ export const RoomsManage = () => {
             }
         }, [deleteCountdown]);
         
-        console.log(roomsManage);
+        //console.log(roomsManage);
         
     
         const headers = [

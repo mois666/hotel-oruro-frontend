@@ -19,7 +19,7 @@ export const ModalRooms = ({
   onClose,
   room,
 }: ModalRoomsProps) => {
-  console.log(room);
+  //console.log(room);
 
   return(
   <>
@@ -35,7 +35,7 @@ export const ModalRooms = ({
           <b>Precio:</b> <p>{room.price}</p>
         </div>
         <div className="flex flex-row gap-2">
-          <b>Capacidad:</b> <p>{room.capacity}</p>
+          <b>Capacidad:</b> <p>{room.type === RoomType.SIMPLE ? "1" : room.type === RoomType.DOUBLE ? "2" : "2"}</p>
         </div>
         
       </ModalBody>

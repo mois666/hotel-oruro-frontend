@@ -20,7 +20,8 @@ export const FormUI: React.FC<IFormInputProps> = ({ fields, formData, onChange }
         <>
             {fields.map((field) => (
                 <div key={field.name} style={{ marginBottom: '15px' }}>
-                    {field.type === 'text' || field.type === 'email' || field.type === 'number' || field.type === 'password' || field.type === 'color' ? (
+                    {/* Input */}
+                    {field.type === 'text' || field.type === 'email' || field.type === 'password' || field.type === 'color' ? (
                         <Input
                             label={field.label}
                             type={field.type}
@@ -29,7 +30,22 @@ export const FormUI: React.FC<IFormInputProps> = ({ fields, formData, onChange }
                             placeholder={field.placeholder}
                             fullWidth
                         />
-                    ) : field.type === 'textarea' ? (
+                    ) :
+                    /* Number */
+                    field.type === 'number' ? (
+                        <Input
+                            label={field.label}
+                            type={field.type}
+                            min={0}
+                            max={10}
+                            value={formData[field.name]}
+                            onChange={(e) => onChange(field.name, e.target.value)}
+                            placeholder={field.placeholder}
+                            fullWidth
+                        />
+                    ) :
+                    /* Textarea */
+                    field.type === 'textarea' ? (
                         <Textarea
                             label={field.label}
                             value={formData[field.name]}

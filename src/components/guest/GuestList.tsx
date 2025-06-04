@@ -25,8 +25,7 @@ import { Button } from '../ui/button';
 import { Guest, RoomType } from '../../types';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale'; // Correctly import the Spanish locale
-import { Edit, MoreHorizontal, Trash2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { MoreHorizontal, Trash2 } from 'lucide-react';
 
 interface GuestListProps {
   guests: Guest[];
@@ -37,7 +36,6 @@ interface GuestListProps {
 const GuestList: React.FC<GuestListProps> = ({
   guests,
   onDelete,
-  onEdit
 }) => {
   const [roomTypeFilter, setRoomTypeFilter] = useState<string>('all');
   const [floorFilter, setFloorFilter] = useState<string>('all');
@@ -52,13 +50,13 @@ const GuestList: React.FC<GuestListProps> = ({
 
   const handleDelete = (id: string) => {
     onDelete?.(id);
-    toast.success('Huésped eliminado con éxito');
+    //toast.success('Huésped eliminado con éxito');
   };
 
-  const handleEdit = (guest: Guest) => {
+ /*  const handleEdit = (guest: Guest) => {
     onEdit?.(guest);
     toast.info('Editando información del huésped');
-  };
+  }; */
 
   return (
     <div className="space-y-4 dark:bg-hotel-darkCard">
@@ -130,10 +128,10 @@ const GuestList: React.FC<GuestListProps> = ({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => handleEdit(guest)}>
-                          <Edit className="mr-2 w-4 h-4" />
-                          <span>Editar</span>
-                        </DropdownMenuItem>
+                        {/* <DropdownMenuItem onClick={() => handleEdit(guest)}>
+                          <FaOutdent className="mr-2 w-4 h-4" />
+                          <span>Salida</span>
+                        </DropdownMenuItem> */}
                         <DropdownMenuItem 
                           className="text-red-600"
                           onClick={() => handleDelete(guest.id)}

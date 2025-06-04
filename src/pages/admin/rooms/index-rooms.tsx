@@ -6,10 +6,11 @@ import RoomGrid from "../../../components/rooms/RoomGrid";
 import { Room } from "../../../types";
 //import { rooms as mockRooms } from "../../../data/mockData";
 import { ModalRooms } from "../../../components/rooms/modal-rooms";
-import { Skeleton, Tab, Tabs } from "@nextui-org/react";
+import { Button, Skeleton, Tab, Tabs } from "@nextui-org/react";
 import { RoomsManage } from "./roms-manage";
 import { useAuthStore } from "../../../stores";
 import { useRoomStore } from "../../../stores/rooms/rooms.store";
+import { FaArrowRotateRight } from "react-icons/fa6";
 
 export const IndexRooms = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,17 +18,17 @@ export const IndexRooms = () => {
   const roomsStore = useRoomStore(state => state.rooms);
   const getRooms = useRoomStore(state => state.getRooms);
 
-  
+
   const handleFetchRooms = async () => {
     setIsLoading(true);
-      await getRooms(token!);
+    await getRooms(token!);
     setIsLoading(false);
   }
   useEffect(() => {
     handleFetchRooms();
   }, []);
-  
-  
+
+
   const [rooms] = useState<Room[]>(roomsStore);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const handleRoomClick = (room: Room) => {
@@ -44,11 +45,26 @@ export const IndexRooms = () => {
     <>
       <div className="my-2 px-4 lg:px-6 max-w-[95rem] mx-auto w-full flex flex-col gap-2">
         <DynamicBreadcrumbs />
-        <h1 className="text-3xl font-bold">Gestión de Habitaciones</h1>
+        <div className="flex items-center justify-between">
+
+
+          <h1 className="text-3xl font-bold">Gestión de Habitaciones</h1>
+          {/* Boton refrescar */}
+          <Button
+            onPress={() => window.location.reload()}
+            className="primary"
+            variant="bordered"
+
+          >
+            <FaArrowRotateRight className="mr-2 w-4 h-4" />
+            Refrescar
+          </Button>
+        </div>
+
         <Tabs aria-label="Options">
           <Tab key="all" title="Vista de todas las habitaciones por piso">
             <div className="rounded-lg shadow-sm">
-              {isLoading || rooms.length === 0 ? (
+              {isLoading ? (
                 <div className="flex items-center justify-center h-64">
                   <Skeleton className="w-full h-64" />
                 </div>
