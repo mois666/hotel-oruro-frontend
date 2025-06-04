@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { IListSettings } from "../../interface/settings/list-response";
 //import { ISettingsResponse, ISystemDataResponse } from "../../interface";
-import { ISettingsResponse } from "../../interface";
 import { IUpdateSettingResponse } from "../../interface/settings/update-settings-response";
 import { company } from "../../api/systemdata";
 
@@ -48,7 +47,7 @@ const storeApi: StateCreator<SettingState & Actions> = (set, get) => ({
     }
   },
 
-  getSettings: async (id, token) => {
+  getSettings: async () => {
     try {
       /* const { data } = await appDB.get<ISettingsResponse>(`/settings/${id}`, {
         headers: {

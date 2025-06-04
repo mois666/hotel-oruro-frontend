@@ -18,7 +18,6 @@ import {
   SettingsPage,
   Terms,
   ShowUsers,
-  IndexClients,
   ShowClients,
   IndexRooms,
 

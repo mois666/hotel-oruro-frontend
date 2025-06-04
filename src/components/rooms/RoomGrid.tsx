@@ -66,9 +66,6 @@ const RoomGrid: React.FC<RoomGridProps> = ({ rooms, onRoomClick }) => {
 
   return (
     <Card>
-      <CardHeader>
-        <p>Vista de todas las habitaciones por piso</p>
-      </CardHeader>
       <CardBody>
         {/*muestra toda las habitaciones */}
         <Tabs
