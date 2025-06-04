@@ -49,20 +49,8 @@ export const ShowUsers = () => {
                     <p>{user?.name}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                    <h3 className="text-lg font-medium">Usuario: </h3>
-                    <p>{user?.username}</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
                     <h3 className="text-lg font-medium">Email: </h3>
                     <p>{user?.email}</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                    <h3 className="text-lg font-medium">Teléfono: </h3>
-                    <p>{user?.phone}</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                    <h3 className="text-lg font-medium">Cédula: </h3>
-                    <p>{user?.ci}</p>
                 </div>
                 <div className="flex flex-col gap-2">
                     <h3 className="text-lg font-medium">Avatar: </h3>
@@ -81,7 +69,7 @@ export const ShowUsers = () => {
                         placeholder="Selecciona un rol"
                     >
                         <SelectItem key="admin" onPress={() => setSelectedRole("admin")}>Admin</SelectItem>
-                        <SelectItem key="worker" onPress={() => setSelectedRole("worker")}>Trabajador</SelectItem>
+                        <SelectItem key="worker" onPress={() => setSelectedRole("worker")}>Recepcionista</SelectItem>
                         <SelectItem key="user" onPress={() => setSelectedRole("user")}>Usuario</SelectItem>
 
                     </Select>
