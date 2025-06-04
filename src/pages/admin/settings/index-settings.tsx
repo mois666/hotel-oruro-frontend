@@ -22,6 +22,7 @@ import { useSettingStore } from "../../../stores/settings/settings.store";
 import { useAuthStore } from "../../../stores";
 import { FaEdit, FaPenAlt, FaTimes } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa6";
+import { userStore } from "../../../stores/users/users.store";
 
 export const SettingsPage = () => {
   const token = useAuthStore((state) => state.token);
@@ -29,11 +30,26 @@ export const SettingsPage = () => {
   const settings = useSettingStore((state) => state.setting);
   const getSettings = useSettingStore((state) => state.getSettings);
 
+
   const [image, setImage] = useState<File>();
   const [preImage, setPreImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const updateSetting = useSettingStore((state) => state.updatedSetting);
+
+//user
+const users = userStore((state) => state.users);
+const getUsers = userStore((state) => state.getUsers);
+
+const handleFetchUser = async () => {
+  if (users.length === 0) {
+    await getUsers(token!);
+  }
+};
+
+
+
+
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
     setImage(file);
@@ -54,8 +70,9 @@ export const SettingsPage = () => {
       await getSettings(1, token!);
     }
   };
-  useEffect(() => {
+  useEffect(() => { 
     handleFetchSettings();
+    handleFetchUser();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -143,42 +160,17 @@ export const SettingsPage = () => {
                       <TableColumn>Acciones</TableColumn>
                     </TableHeader>
                     <TableBody>
-                      <TableRow key="1">
-                        <TableCell>Tony Reichert</TableCell>
-                        <TableCell>tony@gmail.com</TableCell>
-                        <TableCell>Admin</TableCell>
-                        <TableCell className="flex gap-2">
+                      {users.map((user, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{user.name}</TableCell>
+                          <TableCell>{user.email}</TableCell>
+                          <TableCell>{user.role}</TableCell>
+                          <TableCell className="flex gap-2">
                           <Button variant="bordered" size="sm" color="primary" isIconOnly startContent={<FaEdit />} > </Button>
                           <Button variant="bordered" size="sm" color="danger" isIconOnly startContent={<FaTrash />} > </Button>
                         </TableCell>
                       </TableRow>
-                      <TableRow key="2">
-                        <TableCell>Zoey Lang</TableCell>
-                        <TableCell>zoey@gmail.com</TableCell>
-                        <TableCell>Editor</TableCell>
-                        <TableCell className="flex gap-2">
-                          <Button variant="bordered" size="sm" color="primary" isIconOnly startContent={<FaEdit />} > </Button>
-                          <Button variant="bordered" size="sm" color="danger" isIconOnly startContent={<FaTrash />} > </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow key="3">
-                        <TableCell>Jane Fisher</TableCell>
-                        <TableCell>jane@gmail.com</TableCell>
-                        <TableCell>Editor</TableCell>
-                        <TableCell className="flex gap-2">
-                          <Button variant="bordered" size="sm" color="primary" isIconOnly startContent={<FaEdit />} > </Button>
-                          <Button variant="bordered" size="sm" color="danger" isIconOnly startContent={<FaTrash />} > </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow key="4">
-                        <TableCell>William Howard</TableCell>
-                        <TableCell>william@gmail.com</TableCell>
-                        <TableCell>Editor</TableCell>
-                        <TableCell className="flex gap-2">
-                          <Button variant="bordered" size="sm" color="primary" isIconOnly startContent={<FaEdit />} > </Button>
-                          <Button variant="bordered" size="sm" color="danger" isIconOnly startContent={<FaTrash />} > </Button>
-                        </TableCell>
-                      </TableRow>
+                      ))}
                     </TableBody>
                   </Table>
                 </CardBody>

@@ -24,6 +24,7 @@ import {
 
 } from "../pages/admin";
 import GuestRegistration from "../pages/admin/clients/GuestRegistration";
+import GuestsPage from "../pages/admin/clients/GuestList";
 
 
 
@@ -110,7 +111,7 @@ const router = createBrowserRouter([
             path: "huespedes",
             element: (
               <ProtectedRoute roles={["admin"]}>
-                <IndexClients />
+                <GuestsPage />
               </ProtectedRoute>
             ),
           },

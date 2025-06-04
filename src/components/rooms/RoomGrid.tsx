@@ -54,7 +54,7 @@ const RoomCard: React.FC<{ room: Room; onClick?: (room: Room) => void }> = ({
 
 const RoomGrid: React.FC<RoomGridProps> = ({ rooms, onRoomClick }) => {
   const [activeFloor, setActiveFloor] = useState<string>("all");
-
+  
   const floorNumbers = Array.from(
     new Set(rooms.map((room) => room.floor.toString()))
   ).sort();

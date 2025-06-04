@@ -29,20 +29,23 @@ import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "../../lib/utils";
 import { CalendarIcon } from "lucide-react";
-import { Room, RoomType } from "../../types";
+import { Guest, Room, RoomType } from "../../types";
 import { rooms } from "../../data/mockData";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
-import { DatePicker, DateRangePicker, Select, SelectItem } from "@nextui-org/react";
+import {
+  DatePicker,
+  DateRangePicker,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
 
 const formSchema = z.object({
   documentId: z.string().min(5, "El CI/DNI debe tener al menos 5 caracteres"),
   firstName: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
   lastName: z.string().min(2, "El apellido debe tener al menos 2 caracteres"),
-  phone: z
-    .string()
-    .min(7, "El número de teléfono debe tener al menos 7 caracteres"),
+  phone: z.string().min(7, "El número de teléfono debe tener al menos 7 caracteres"),
   roomType: z.enum([RoomType.SIMPLE, RoomType.DOUBLE, RoomType.SUITE]),
   roomNumber: z.string().min(1, "Debe seleccionar una habitación"),
   checkIn: z.date(),
@@ -192,28 +195,28 @@ const GuestRegistrationForm: React.FC<GuestRegistrationFormProps> = ({
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Select
-      isRequired
-      className="w-full"
-      defaultSelectedKeys={["simple"]}
-      label="Tipo de habitación"
-      placeholder="Tipo de habitación"
-    >
-        <SelectItem key={"simple"}>Simple</SelectItem>
-        <SelectItem key={"double"}>Doble</SelectItem>
-        <SelectItem key={"suite"}>Suite</SelectItem>
-    </Select>
-    <Select
-      isRequired
-      className="w-full"
-      defaultSelectedKeys={["simple"]}
-      label="Habitación"
-      placeholder="Habitación"
-    >
-        <SelectItem key={"simple"}>#101 - Piso 1</SelectItem>
-        <SelectItem key={"double"}>#202 - Piso 2</SelectItem>
-        <SelectItem key={"suite"}>#303 - Piso 3</SelectItem>
-    </Select>
+              <Select
+                isRequired
+                className="w-full"
+                defaultSelectedKeys={["simple"]}
+                label="Tipo de habitación"
+                placeholder="Tipo de habitación"
+              >
+                <SelectItem key={"simple"}>Simple</SelectItem>
+                <SelectItem key={"double"}>Doble</SelectItem>
+                <SelectItem key={"suite"}>Suite</SelectItem>
+              </Select>
+              <Select
+                isRequired
+                className="w-full"
+                defaultSelectedKeys={["simple"]}
+                label="Habitación"
+                placeholder="Habitación"
+              >
+                <SelectItem key={"simple"}>#101 - Piso 1</SelectItem>
+                <SelectItem key={"double"}>#202 - Piso 2</SelectItem>
+                <SelectItem key={"suite"}>#303 - Piso 3</SelectItem>
+              </Select>
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

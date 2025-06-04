@@ -11,7 +11,7 @@ const statusLabels: Record<RoomStatus, string> = {
 interface ModalRoomsProps {
   isOpen: boolean;
   onClose: () => void;
-  room: {};
+  room: Room;
 }
 
 export const ModalRooms = ({
