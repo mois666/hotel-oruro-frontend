@@ -1,279 +1,195 @@
-import React, { useState } from "react";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-
-
-import { Input } from "../ui/input";
-import { Calendar } from "../ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { cn } from "../../lib/utils";
-import { CalendarIcon } from "lucide-react";
-import { Guest, Room, RoomType } from "../../types";
-import { rooms } from "../../data/mockData";
+import { useEffect, useState } from "react";
+import { Room } from "../../types";
+import { Button, Card, CardBody, CardFooter, CardHeader, Input, Select, SelectItem } from "@nextui-org/react";
 import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import {
-  DatePicker,
-  DateRangePicker,
-  Select,
-  SelectItem,
-} from "@nextui-org/react";
+import { useAuthStore, useClientStore, useRoomStore } from "../../stores";
 
-const formSchema = z.object({
-  documentId: z.string().min(5, "El CI/DNI debe tener al menos 5 caracteres"),
-  firstName: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
-  lastName: z.string().min(2, "El apellido debe tener al menos 2 caracteres"),
-  phone: z.string().min(7, "El número de teléfono debe tener al menos 7 caracteres"),
-  roomType: z.enum([RoomType.SIMPLE, RoomType.DOUBLE, RoomType.SUITE]),
-  roomNumber: z.string().min(1, "Debe seleccionar una habitación"),
-  checkIn: z.date(),
-  checkOut: z.date(),
-  discount: z.string().optional(),
-});
 
-type FormValues = z.infer<typeof formSchema>;
+export const GuestRegistrationForm = () => {
+  function formatDate(date: any) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
 
-interface GuestRegistrationFormProps {
-  onSubmitSuccess?: () => void;
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
 }
-
-const GuestRegistrationForm: React.FC<GuestRegistrationFormProps> = ({
-  onSubmitSuccess,
-}) => {
+  const token = useAuthStore((state) => state.token);
   const [availableRooms, setAvailableRooms] = useState<Room[]>([]);
+  const [availableTypes, setAvailableTypes] = useState<string[]>([]);
   const [total, setTotal] = useState(0);
+  const getRooms = useRoomStore((state) => state.getRooms);
+  const createClient = useClientStore((state) => state.createClient);
+  let today = new Date();
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      documentId: "",
-      firstName: "",
-      lastName: "",
-      phone: "",
-      roomType: RoomType.SIMPLE,
-      roomNumber: "",
-      checkIn: new Date(),
-      checkOut: new Date(Date.now() + 24 * 60 * 60 * 1000), // tomorrow
-      discount: "0",
-    },
-  });
+  //const [dateStart, setDateStart] = useState(today.toISOString().split('T')[0]);
+  const [dateStart, setDateStart] = useState(formatDate(today.toDateString()));
+  /* today + 1 day */
+  const [dateEnd, setDateEnd] = useState( formatDate(today.setDate(today.getDate() + 1)));
 
-  const roomType = form.watch("roomType");
-  const checkIn = form.watch("checkIn");
-  const checkOut = form.watch("checkOut");
-  const roomNumber = form.watch("roomNumber");
-  const discount = form.watch("discount");
+  const handleDateStartChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDateStart(formatDate(e.target.value));
+    const date = new Date(e.target.value);
+    setDateEnd(formatDate(date.setDate(date.getDate() + 1)));
+  };
+  const formData = {
+    documentId: "",
+    phone: "",
+    firstName: "",
+    lastName: "",
+    checkIn: dateStart,
+    checkOut: dateEnd,
+    discount: 0,
+    total: total,
+    roomType: "",
+    room: ""
+  };
 
-  // Filter available rooms whenever room type changes
-  React.useEffect(() => {
-    if (roomType) {
-      const filtered = rooms.filter((room) => room.type === roomType);
-      setAvailableRooms(filtered);
+  const handleSelectRoom = async () => {
+    const rooms = await getRooms(token!)
+    /* Fileter available rooms */
+    const availableRooms = rooms.filter((room) => room.status === "available");
+    setAvailableRooms(availableRooms)
+    /* Fileter available types */
+    const availableTypes = availableRooms.map((room) => room.type);
+    setAvailableTypes([...new Set(availableTypes)])
+    /* Calculate total */
+    const total = availableRooms.reduce((acc, room) => acc + room.price, 0);
+    setTotal(total)
+  };
+  useEffect(() => {
+    handleSelectRoom();
+  }, []);
+
+  console.log("availableRooms", availableRooms);
+
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    /* Validacion */
+    if (!formData.documentId || !formData.phone || !formData.firstName || !formData.lastName || !formData.roomType || !formData.room) {
+      toast.error('Todos los campos son obligatorios');
+      return;
     }
-  }, [roomType]);
 
-  // Calculate total whenever relevant fields change
-  React.useEffect(() => {
-    if (roomNumber && checkIn && checkOut) {
-      const selectedRoom = rooms.find(
-        (r) => r.number.toString() === roomNumber
-      );
-      if (selectedRoom) {
-        const pricePerNight = selectedRoom.price;
-        const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime());
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        const totalBeforeDiscount = pricePerNight * diffDays;
-        const discountAmount = parseInt(discount || "0", 10);
-        const finalTotal = totalBeforeDiscount * (1 - discountAmount / 100);
-        setTotal(finalTotal);
-      }
+    let data = {
+      'room_id': formData.room,
+      'ci': formData.documentId,
+      'phone': formData.phone,
+      'name': formData.firstName,
+      'last_name': formData.lastName,
+      'start_date': formData.checkIn,
+      'end_date': formData.checkOut,
+      'discount': formData.discount,
+      'total': formData.total,
     }
-  }, [roomNumber, checkIn, checkOut, discount]);
 
-  const onSubmit = (data: FormValues) => {
-    console.log("Form submitted:", data);
-    toast.success("Reserva registrada con éxito!", {
-      description: `${data.firstName} ${data.lastName} - Habitación ${data.roomNumber}`,
-    });
-
-    if (onSubmitSuccess) {
-      onSubmitSuccess();
-    }
+    createClient(data as any, token!);
+    
   };
 
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Registro de Cliente</CardTitle>
-        <CardDescription>
+        <h3>Registro de Cliente</h3>
+        <p>
           Ingrese los datos del huésped para crear una nueva reserva
-        </CardDescription>
+        </p>
       </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <CardBody>
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="documentId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>CI/DNI</FormLabel>
-                    <FormControl>
-                      <Input placeholder="12345678" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex flex-col gap-2">
+                <label htmlFor="documentId">CI/DNI</label>
+                <Input isRequired type="text" id="documentId" name="documentId" onChange={(e) => formData.documentId = e.target.value} />
+              </div>
+              
 
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Celular</FormLabel>
-                    <FormControl>
-                      <Input placeholder="555-1234" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex flex-col gap-2">
+                <label htmlFor="phone">Celular</label>
+                <Input isRequired type="text" id="phone" name="phone" onChange={(e) => formData.phone = e.target.value} />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nombres</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Juan Carlos" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex flex-col gap-2">
+                <label htmlFor="firstName">Nombres</label>
+                <Input isRequired type="text" id="firstName" name="firstName" onChange={(e) => formData.firstName = e.target.value} />
+              </div>
 
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Apellidos</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Pérez Gómez" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex flex-col gap-2">
+                <label htmlFor="lastName">Apellidos</label>
+                <Input isRequired type="text" id="lastName" name="lastName" onChange={(e) => formData.lastName = e.target.value} />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <Select
                 isRequired
+                id="roomType"
+                name="roomType"
                 className="w-full"
-                defaultSelectedKeys={["simple"]}
                 label="Tipo de habitación"
                 placeholder="Tipo de habitación"
+                onChange={(e) => formData.roomType = e.target.value}
               >
-                <SelectItem key={"simple"}>Simple</SelectItem>
-                <SelectItem key={"double"}>Doble</SelectItem>
-                <SelectItem key={"suite"}>Suite</SelectItem>
+                {availableTypes.map((type) => (
+                  <SelectItem key={type}>{type}</SelectItem>
+                ))}
               </Select>
               <Select
+                id="room"
+                name="room"
                 isRequired
                 className="w-full"
-                defaultSelectedKeys={["simple"]}
                 label="Habitación"
                 placeholder="Habitación"
+                onChange={(e) => formData.room = e.target.value}
               >
-                <SelectItem key={"simple"}>#101 - Piso 1</SelectItem>
-                <SelectItem key={"double"}>#202 - Piso 2</SelectItem>
-                <SelectItem key={"suite"}>#303 - Piso 3</SelectItem>
+                {availableRooms.map((room) => (
+                  <SelectItem key={room.id}>{"#"+room.number+" - Piso "+room.floor}</SelectItem>
+                ))}
               </Select>
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <FormField
-                control={form.control}
+              <div className="flex flex-col gap-2">
+                <label htmlFor="checkIn">Fecha Inicio</label>
+                <Input 
+                isRequired 
+                type="date" 
+                id="checkIn" 
                 name="checkIn"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Fecha Inicio</FormLabel>
-                    <div className="flex flex-wrap gap-4 w-full md:flex-nowrap">
-                      <DatePicker
-                        isRequired
-                        className="max-w-[284px]"
-                        label="Birth date"
-                      />
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                onChange={(e) => handleDateStartChange(e)}
+                defaultValue={dateStart}
+                />
+              </div>
 
-              <FormField
-                control={form.control}
-                name="checkOut"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Fecha Fin</FormLabel>
-                    <div className="flex flex-wrap gap-4 w-full md:flex-nowrap">
-                      <DatePicker
-                        isRequired
-                        className="max-w-[284px]"
-                        label="Birth date"
-                      />
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex flex-col gap-2">
+                <label htmlFor="checkOut">Fecha Fin</label>
+                <Input 
+                isRequired 
+                type="date" 
+                id="checkOut" 
+                name="checkOut" 
+                onChange={(e) => setDateEnd(e.target.value)}
+                value={dateEnd}
+                />
+              </div>
+
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="discount"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Descuento (%)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min="0"
-                        max="100"
-                        placeholder="0"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex flex-col gap-2">
+                <label htmlFor="discount">Descuento (%)</label>
+                <Input type="number" id="discount" name="discount" />
+              </div>
 
               <div className="flex flex-col">
                 <span className="mb-2 text-sm font-medium">Sub Total</span>
@@ -292,10 +208,7 @@ const GuestRegistrationForm: React.FC<GuestRegistrationFormProps> = ({
               </Button>
             </CardFooter>
           </form>
-        </Form>
-      </CardContent>
+      </CardBody>
     </Card>
   );
 };
-
-export default GuestRegistrationForm;

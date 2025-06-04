@@ -1,17 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DynamicBreadcrumbs,
-  FormModal,
 } from "../../../components";
 import RoomGrid from "../../../components/rooms/RoomGrid";
 import { Room } from "../../../types";
-import { rooms as mockRooms } from "../../../data/mockData";
+//import { rooms as mockRooms } from "../../../data/mockData";
 import { ModalRooms } from "../../../components/rooms/modal-rooms";
-import { Tab, Tabs } from "@nextui-org/react";
+import { Skeleton, Tab, Tabs } from "@nextui-org/react";
 import { RoomsManage } from "./roms-manage";
+import { useAuthStore } from "../../../stores";
+import { useRoomStore } from "../../../stores/rooms/rooms.store";
 
 export const IndexRooms = () => {
-  const [rooms] = useState<Room[]>(mockRooms);
+  const [isLoading, setIsLoading] = useState(false);
+  const token = useAuthStore(state => state.token);
+  const roomsStore = useRoomStore(state => state.rooms);
+  const getRooms = useRoomStore(state => state.getRooms);
+
+  
+  const handleFetchRooms = async () => {
+    setIsLoading(true);
+      await getRooms(token!);
+    setIsLoading(false);
+  }
+  useEffect(() => {
+    handleFetchRooms();
+  }, []);
+  
+  
+  const [rooms] = useState<Room[]>(roomsStore);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const handleRoomClick = (room: Room) => {
     setSelectedRoom(room);
@@ -20,7 +37,7 @@ export const IndexRooms = () => {
   const handleCloseDialog = () => {
     setSelectedRoom(null);
   };
-/* manage rooms */
+  /* manage rooms */
 
 
   return (
@@ -31,7 +48,13 @@ export const IndexRooms = () => {
         <Tabs aria-label="Options">
           <Tab key="all" title="Vista de todas las habitaciones por piso">
             <div className="rounded-lg shadow-sm">
-              <RoomGrid rooms={rooms} onRoomClick={handleRoomClick} />
+              {isLoading || rooms.length === 0 ? (
+                <div className="flex items-center justify-center h-64">
+                  <Skeleton className="w-full h-64" />
+                </div>
+              ) : (
+                <RoomGrid rooms={rooms} onRoomClick={handleRoomClick} />
+              )}
             </div>
           </Tab>
           <Tab key="register" title="Registrar Habitación">
@@ -39,11 +62,6 @@ export const IndexRooms = () => {
           </Tab>
 
         </Tabs>
-
-
-
-
-
 
       </div>
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 //import { guests as mockGuests } from "../../../data/mockData";
 import { Guest } from "../../../types";
 import GuestList from "../../../components/guest/GuestList";

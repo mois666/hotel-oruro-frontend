@@ -10,7 +10,7 @@ interface RoomsState {
   room: any[];
 }
 interface Actions {
-  getRooms: (token: string) => void;
+  getRooms: (token: string) => Promise<any[]>;
   getRoom: (id: number, token: string) => void;
   createRoom: (room: [], token: string) => void;
   updateRoom: (id: number, room: [], token: string) => void;
@@ -30,6 +30,7 @@ const storeApi: StateCreator<RoomsState & Actions> = (set, get) => ({
         },
       });
       set({ rooms: response.data as any });
+      return response.data;
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(error.response?.data.message);

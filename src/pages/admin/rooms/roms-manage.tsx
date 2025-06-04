@@ -16,7 +16,7 @@ export const RoomsManage = () => {
         const [deleteCountdown, setDeleteCountdown] = useState<number | null>(null);
         const [deleteRowId, setDeleteRowId] = useState<number | null>(null);
         /* customers */
-        const rooms = useRoomStore((state) => state.rooms);
+        const roomsManage = useRoomStore((state) => state.rooms);
         const getRooms = useRoomStore((state) => state.getRooms);
         const createRoom = useRoomStore((state) => state.createRoom);
         const updateRoom = useRoomStore((state) => state.updateRoom);
@@ -24,7 +24,7 @@ export const RoomsManage = () => {
     
         const navigate = useNavigate();
         const handleFetchRooms = async () => {
-            if (rooms.length === 0) {
+            if (roomsManage.length === 0) {
                 await getRooms(token!);
             }
         }
@@ -41,11 +41,11 @@ export const RoomsManage = () => {
             }
         }, [deleteCountdown]);
         
-        console.log(rooms);
+        console.log(roomsManage);
         
     
         const headers = [
-            { name: '#', uid: 'num' },
+            { name: '#', uid: 'number' },
             { name: 'TIPO', uid: 'type' },
             { name: 'ESTADO', uid: 'status' },
             { name: 'PISO', uid: 'floor' },
@@ -53,7 +53,7 @@ export const RoomsManage = () => {
             { name: 'ACCIONES', uid: 'actions-ed' }
         ];
         const fields = [
-            { name: 'num', label: 'Número', type: 'number', placeholder: 'Número de la habitación' },
+            { name: 'number', label: 'Número', type: 'number', placeholder: 'Número de la habitación' },
             { name: 'type', label: 'Tipo', type: 'select', placeholder: 'Tipo de habitación', options: Object.values(RoomType).map((type) => ({ value: type, label: type })) },
             { name: 'status', label: 'Estado', type: 'select', placeholder: 'Estado de la habitación', options: [
                 { value: RoomStatus.AVAILABLE, label: 'Disponible' },
@@ -126,7 +126,7 @@ export const RoomsManage = () => {
               initialValues={selectedRowData || {}}  // Pasar los valores seleccionados o vacío si es nuevo
             />
             <h2>Habitaciones</h2>
-            <DynamicTable stringSearch={'num'} onCreate={handleNewCategoryClick} data={rooms} columns={headers} onEdit={handleEditClick} onDelete={handleDeleteClick} onView={handleViewClick} />
+            <DynamicTable stringSearch={'number'} onCreate={handleNewCategoryClick} data={roomsManage} columns={headers} onEdit={handleEditClick} onDelete={handleDeleteClick} onView={handleViewClick} />
             {deleteRowId != null ? (
               <AlertDelete handleConfirmDelete={handleConfirmDelete} handleCancelDelete={handleCancelDelete} deleteCountdown={deleteCountdown} message={'¿Estás seguro de querer eliminar el cliente?'} />
 
