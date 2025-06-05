@@ -44,9 +44,9 @@ export const ModalRooms = ({
           Cerrar
         </Button>
         {/* Editar Habitacion */}
-        <Button color="primary" onPress={() => {}}>
+        {/* <Button color="primary" onPress={() => {}}>
           Editar Habitación
-        </Button>
+        </Button> */}
       </ModalFooter>
     </ModalContent>
     

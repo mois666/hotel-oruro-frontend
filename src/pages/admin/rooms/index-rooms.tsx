@@ -29,6 +29,13 @@ export const IndexRooms = () => {
     handleFetchRooms();
   }, []);
 
+  useEffect(() => {
+    setIsLoading(true);
+    getRooms(token!);
+    setIsLoading(false);
+  }, [token]);
+
+
 
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const handleRoomClick = (room: Room) => {

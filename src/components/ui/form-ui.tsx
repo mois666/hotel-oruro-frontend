@@ -36,8 +36,8 @@ export const FormUI: React.FC<IFormInputProps> = ({ fields, formData, onChange }
                         <Input
                             label={field.label}
                             type={field.type}
-                            min={0}
-                            max={10}
+                            min={1}
+                            max={9999}
                             value={formData[field.name]}
                             onChange={(e) => onChange(field.name, e.target.value)}
                             placeholder={field.placeholder}

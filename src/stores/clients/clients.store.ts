@@ -7,7 +7,7 @@ import { appDB } from "../../api/appDB";
 
 interface ClientsState {
   clients: any[];
-  client: any[];
+  client: [];
 }
 interface Actions {
   getClients: (token: string) => void;
@@ -43,7 +43,7 @@ const storeApi: StateCreator<ClientsState & Actions> = (set, get) => ({
           Authorization: `Bearer ${token}`,
         },
       });
-      set({ client: response.data as any });
+      set({ client: response.data});
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(error.response?.data.message);

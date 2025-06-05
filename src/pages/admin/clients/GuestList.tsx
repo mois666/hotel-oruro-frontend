@@ -81,8 +81,7 @@ const GuestsPage = () => {
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Huéspedes</h1>
         <Button
-          onClick={handleAddGuest}
-          className="bg-hotel-blue hover:bg-hotel-darkBlue"
+          onClick={() => navigate("/admin/registro")}
         >
           <PlusCircle className="mr-2 w-4 h-4" />
           Registrar Huésped

@@ -3,6 +3,7 @@ import { Room } from "../../types";
 import { Button, Card, CardBody, CardFooter, CardHeader, Input, Select, SelectItem } from "@nextui-org/react";
 import { useAuthStore, useClientStore, useRoomStore } from "../../stores";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 
 export const GuestRegistrationForm = () => {
@@ -51,6 +52,14 @@ export const GuestRegistrationForm = () => {
     roomType: "",
     room: ""
   });
+  /* Validate feilds */
+  const validateFields = () => {
+    if (!formData.documentId || !formData.phone || !formData.firstName || !formData.lastName || !formData.roomType || !formData.room) {
+      toast.error('Todos los campos son obligatorios');
+      return false;
+    }
+    return true;
+  }
 
   const handleSelectRoom = async () => {
     const rooms = await getRooms(token!)
@@ -87,10 +96,7 @@ export const GuestRegistrationForm = () => {
     e.preventDefault();
 
     /* Validacion */
-    /* if (!formData.documentId || !formData.phone || !formData.firstName || !formData.lastName || !formData.roomType || !formData.room) {
-      toast.error('Todos los campos son obligatorios');
-      return;
-    } */
+    //if (!validateFields()) return;
 
     let data = {
       'room_id': formData.room,
@@ -104,7 +110,7 @@ export const GuestRegistrationForm = () => {
       'total': total,
     }
     createClient(data as any, token!);
-    navigate("/admin/huespedes");
+    //navigate("/admin/huespedes");
     
   };
 

@@ -12,6 +12,7 @@ import { useAuthStore, useRoomStore } from "../../stores";
 import { useClientStore } from "../../stores/clients/clients.store";
 import { Spinner } from "@nextui-org/react";
 import { format } from "date-fns";
+import { RoomStatus } from "../../types";
 
 export const HomeIndex = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -54,14 +55,24 @@ export const HomeIndex = () => {
     const today = format(new Date(), 'yyyy-MM-dd');
     const week = format(new Date(new Date().setDate(new Date().getDate() - 7)), 'yyyy-MM-dd');
     const month = format(new Date(new Date().setMonth(new Date().getMonth() - 1)), 'yyyy-MM-dd');
+    const totalRooms = roomsStore.length;
+    const statusCounts = {
+      [RoomStatus.AVAILABLE]: roomsStore.filter(r => r.status === RoomStatus.AVAILABLE).length,
+      [RoomStatus.OCCUPIED]: roomsStore.filter(r => r.status === RoomStatus.OCCUPIED).length,
+      [RoomStatus.CLEANING]: roomsStore.filter(r => r.status === RoomStatus.CLEANING).length,
+      [RoomStatus.MAINTENANCE]: roomsStore.filter(r => r.status === RoomStatus.MAINTENANCE).length,
+    };
+    const occupancyRate = Math.round((statusCounts[RoomStatus.OCCUPIED] / totalRooms) * 100);
     setFinancialMetrics({
       todayRevenue: guests.filter(guest => format(guest.checkIn, 'yyyy-MM-dd') === today).reduce((total, guest) => total + guest.total, 0),
       weekRevenue: guests.filter(guest => format(guest.checkIn, 'yyyy-MM-dd') >= week).reduce((total, guest) => total + guest.total, 0),
       monthRevenue: guests.filter(guest => format(guest.checkIn, 'yyyy-MM-dd') >= month).reduce((total, guest) => total + guest.total, 0),
       totalRevenue: guests.reduce((total, guest) => total + guest.total, 0),
-      occupancyRate: (guests.filter(guest => guest.status === 'occupied').length / guests.length) * 100,
+      occupancyRate: occupancyRate,
     });
-  }, [guests]);
+  }, [guests, roomsStore]);
+
+  console.log("guests", guests);
 
   return (
     <div className="space-y-6">
