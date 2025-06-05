@@ -26,17 +26,19 @@ import { Guest, RoomType } from '../../types';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale'; // Correctly import the Spanish locale
 import { MoreHorizontal, Trash2 } from 'lucide-react';
+import { FaEye } from 'react-icons/fa6';
+import { useNavigate } from 'react-router-dom';
 
 interface GuestListProps {
   guests: Guest[];
   onDelete?: (id: string) => void;
-  onEdit?: (guest: Guest) => void;
 }
 
 const GuestList: React.FC<GuestListProps> = ({
   guests,
   onDelete,
 }) => {
+  const navigate = useNavigate();
   const [roomTypeFilter, setRoomTypeFilter] = useState<string>('all');
   const [floorFilter, setFloorFilter] = useState<string>('all');
 
@@ -53,10 +55,9 @@ const GuestList: React.FC<GuestListProps> = ({
     //toast.success('Huésped eliminado con éxito');
   };
 
- /*  const handleEdit = (guest: Guest) => {
-    onEdit?.(guest);
-    toast.info('Editando información del huésped');
-  }; */
+  const handleView = (guest: Guest) => {
+    navigate(`/admin/huespedes/${guest.id}`);
+  };
 
   return (
     <div className="space-y-4 dark:bg-hotel-darkCard">
@@ -128,10 +129,10 @@ const GuestList: React.FC<GuestListProps> = ({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        {/* <DropdownMenuItem onClick={() => handleEdit(guest)}>
-                          <FaOutdent className="mr-2 w-4 h-4" />
-                          <span>Salida</span>
-                        </DropdownMenuItem> */}
+                        <DropdownMenuItem onClick={() => handleView(guest)}>
+                          <FaEye className="mr-2 w-4 h-4" />
+                          <span>Detalle</span>
+                        </DropdownMenuItem>
                         <DropdownMenuItem 
                           className="text-red-600"
                           onClick={() => handleDelete(guest.id)}

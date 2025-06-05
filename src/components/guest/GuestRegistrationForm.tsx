@@ -101,7 +101,7 @@ export const GuestRegistrationForm = () => {
       'start_date': formData.checkIn,
       'end_date': formData.checkOut,
       'discount': formData.discount,
-      'total': formData.total,
+      'total': total,
     }
     createClient(data as any, token!);
     navigate("/admin/huespedes");

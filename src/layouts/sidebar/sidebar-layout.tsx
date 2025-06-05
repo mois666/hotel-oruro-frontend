@@ -8,7 +8,6 @@ import { useSidebarContext } from "../layout-context";
 import { FaBox, FaHouse, FaStore, FaUsers } from 'react-icons/fa6'
 import { Navigate, useLocation, useParams } from "react-router-dom";
 import { useAuthStore } from "../../stores";
-import { TbCategoryPlus } from "react-icons/tb";
 import { FaCog } from "react-icons/fa";
 
 export const SidebarLayout = () => {

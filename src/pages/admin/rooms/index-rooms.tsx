@@ -18,6 +18,7 @@ export const IndexRooms = () => {
   const roomsStore = useRoomStore(state => state.rooms);
   const getRooms = useRoomStore(state => state.getRooms);
 
+  const [rooms] = useState<Room[]>( isLoading ? [] : roomsStore);
 
   const handleFetchRooms = async () => {
     setIsLoading(true);
@@ -29,7 +30,6 @@ export const IndexRooms = () => {
   }, []);
 
 
-  const [rooms] = useState<Room[]>(roomsStore);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const handleRoomClick = (room: Room) => {
     setSelectedRoom(room);

@@ -1,14 +1,68 @@
 import { DynamicBreadcrumbs } from "../../components";
 import ActionButtons from "../../components/dashboard/ActionButtons";
 import { StatCard } from "../../components/dashboard/StatCard";
-import { financialMetrics } from "../../data/mockData";
-import { guests } from "../../data/mockData";
-import { rooms } from "../../data/mockData";
+//import { financialMetrics } from "../../data/mockData";
+//import { guests } from "../../data/mockData";
+//import { rooms } from "../../data/mockData";
 import RoomStatusCard from "../../components/dashboard/RoomStatusCard";
 import OccupancyChart from "../../components/dashboard/OccupancyChart";
 import GuestSummary from "../../components/dashboard/GuestSummary";
+import { useEffect, useState } from "react";
+import { useAuthStore, useRoomStore } from "../../stores";
+import { useClientStore } from "../../stores/clients/clients.store";
+import { Spinner } from "@nextui-org/react";
+import { format } from "date-fns";
 
 export const HomeIndex = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const token = useAuthStore(state => state.token);
+  const guests = useClientStore(state => state.clients);
+  const getGuests = useClientStore(state => state.getClients);
+  const roomsStore = useRoomStore(state => state.rooms);
+  const getRooms = useRoomStore(state => state.getRooms);
+
+  const [financialMetrics, setFinancialMetrics] = useState({
+    todayRevenue: 0,
+    weekRevenue: 0,
+    monthRevenue: 0,
+    totalRevenue: 0,
+    occupancyRate: 0, // percentage
+  });
+
+
+  const handleFetchGuests = async () => {
+    setIsLoading(true);
+    await getGuests(token!);
+    
+    setIsLoading(false);
+  }
+
+  const handleFetchRooms = async () => {
+    setIsLoading(true);
+    await getRooms(token!);
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    handleFetchGuests();
+    handleFetchRooms();
+    
+
+  }, []);
+
+  useEffect(() => {
+    const today = format(new Date(), 'yyyy-MM-dd');
+    const week = format(new Date(new Date().setDate(new Date().getDate() - 7)), 'yyyy-MM-dd');
+    const month = format(new Date(new Date().setMonth(new Date().getMonth() - 1)), 'yyyy-MM-dd');
+    setFinancialMetrics({
+      todayRevenue: guests.filter(guest => format(guest.checkIn, 'yyyy-MM-dd') === today).reduce((total, guest) => total + guest.total, 0),
+      weekRevenue: guests.filter(guest => format(guest.checkIn, 'yyyy-MM-dd') >= week).reduce((total, guest) => total + guest.total, 0),
+      monthRevenue: guests.filter(guest => format(guest.checkIn, 'yyyy-MM-dd') >= month).reduce((total, guest) => total + guest.total, 0),
+      totalRevenue: guests.reduce((total, guest) => total + guest.total, 0),
+      occupancyRate: (guests.filter(guest => guest.status === 'occupied').length / guests.length) * 100,
+    });
+  }, [guests]);
+
   return (
     <div className="space-y-6">
       <DynamicBreadcrumbs />
@@ -34,9 +88,15 @@ export const HomeIndex = () => {
       <ActionButtons />
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <OccupancyChart />
-        <RoomStatusCard rooms={rooms} />
+        <RoomStatusCard rooms={roomsStore} />
       </div>
-      <GuestSummary guests={guests} />
+      {isLoading ? (
+        <div className="flex justify-center items-center h-64">
+          <Spinner />
+        </div>
+      ) : (
+        <GuestSummary guests={guests} />
+      )}
     </div>
   );
 };

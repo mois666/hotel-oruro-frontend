@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 //import { guests as mockGuests } from "../../../data/mockData";
-import { Guest } from "../../../types";
+//import { Guest } from "../../../types";
 import GuestList from "../../../components/guest/GuestList";
 import { Button } from "../../../components/ui/button";
 import { PlusCircle } from "lucide-react";
@@ -71,10 +71,6 @@ const GuestsPage = () => {
     }
   };
 
-  const handleEditGuest = (guest: Guest) => {
-    // In a real app, this would open an edit form
-    console.log("Editing guest:", guest);
-  };
 
   const handleAddGuest = () => {
     navigate("/registro");
@@ -102,7 +98,6 @@ const GuestsPage = () => {
           <GuestList
             guests={clients}
             onDelete={handleDeleteGuest}
-            onEdit={handleEditGuest}
           />
         )}
       </div>

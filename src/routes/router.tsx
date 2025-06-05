@@ -24,6 +24,7 @@ import {
 } from "../pages/admin";
 import GuestRegistration from "../pages/admin/clients/GuestRegistration";
 import GuestsPage from "../pages/admin/clients/GuestList";
+import { ViewGuest } from "../components";
 
 
 
@@ -111,6 +112,14 @@ const router = createBrowserRouter([
             element: (
               <ProtectedRoute roles={["admin"]}>
                 <GuestsPage />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "huespedes/:id",
+            element: (
+              <ProtectedRoute roles={["admin"]}>
+                <ViewGuest />
               </ProtectedRoute>
             ),
           },
