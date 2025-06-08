@@ -78,7 +78,7 @@ const router = createBrowserRouter([
           {
             path: "",
             element: (
-              <ProtectedRoute roles={["admin"]}>
+              <ProtectedRoute roles={["admin","recepcionista"]}>
                 <HomeIndex />
               </ProtectedRoute>
             ),
@@ -86,7 +86,7 @@ const router = createBrowserRouter([
           {
             path: "registro",
             element: (
-              <ProtectedRoute roles={["admin"]}>
+              <ProtectedRoute roles={["admin","recepcionista"]}>
                 <GuestRegistration />
               </ProtectedRoute>
             ),
@@ -94,7 +94,7 @@ const router = createBrowserRouter([
           {
             path: "users",
             element: (
-              <ProtectedRoute roles={["admin"]}>
+              <ProtectedRoute roles={["admin","recepcionista"]}>
                 <IndexUsers />
               </ProtectedRoute>
             ),
@@ -102,7 +102,7 @@ const router = createBrowserRouter([
           {
             path: "users/:id",
             element: (
-              <ProtectedRoute roles={["admin"]}>
+              <ProtectedRoute roles={["admin","recepcionista"]}>
                 <ShowUsers />
               </ProtectedRoute>
             ),
@@ -110,7 +110,7 @@ const router = createBrowserRouter([
           {
             path: "huespedes",
             element: (
-              <ProtectedRoute roles={["admin"]}>
+              <ProtectedRoute roles={["admin","recepcionista"]}>
                 <GuestsPage />
               </ProtectedRoute>
             ),
@@ -118,7 +118,7 @@ const router = createBrowserRouter([
           {
             path: "huespedes/:id",
             element: (
-              <ProtectedRoute roles={["admin"]}>
+              <ProtectedRoute roles={["admin","recepcionista"]}>
                 <ViewGuest />
               </ProtectedRoute>
             ),
@@ -126,7 +126,7 @@ const router = createBrowserRouter([
           {
             path: "huespedes/:id",
             element: (
-              <ProtectedRoute roles={["admin"]}>
+              <ProtectedRoute roles={["admin","recepcionista"]}>
                 <ShowClients />
               </ProtectedRoute>
             ),
@@ -135,7 +135,7 @@ const router = createBrowserRouter([
           {
             path: "habitaciones",
             element: (
-              <ProtectedRoute roles={["admin"]}>
+              <ProtectedRoute roles={["admin","recepcionista"]}>
                 <IndexRooms />
               </ProtectedRoute>
             ),

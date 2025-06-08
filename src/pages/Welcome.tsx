@@ -71,51 +71,9 @@ export const Welcome = () => {
 
   return (
     <div className="my-0 px-4 md:px-6 lg:px-6 max-w-[95rem] mx-auto w-full flex flex-col gap-4">
-      <h2 className="text-2xl font-bold">Tiendas</h2>
+      {/* <h2 className="text-2xl font-bold">Tiendas</h2> */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {isLoading ? (
-          /* TODO: Add a skeleton 3 cards */
-          <>
-            <Skeleton className="w-full h-[200px]" />
-            <Skeleton className="w-full h-[200px]" />
-            <Skeleton className="w-full h-[200px]" />
-          </>
-
-        ) : (
-            <Card className="max-w-[400px]" key={1}>
-
-
-              <CardHeader className="flex gap-3">
-
-                <Image
-                  alt="heroui logo"
-                  height={40}
-                  radius="sm"
-                  src="/campo1.jpg"
-                  width={40}
-                />
-                <div className="flex flex-col">
-
-                  <p className="text-md">fyjy</p>
-                  <p className="text-small text-default-500">fyjy</p>
-                </div>
-
-              </CardHeader>
-              <Divider />
-              <CardBody>
-                <p>jgfyfkuykyj</p>
-              </CardBody>
-              <Divider />
-              {authStatus === 'auth' && (
-                <CardFooter>
-
-                  <Button color="danger" variant="flat" >
-                    Visitar tienda
-                  </Button>
-                </CardFooter>
-              )}
-            </Card>
-        )}
+        
 
       </div>
       <FooterLayout />
