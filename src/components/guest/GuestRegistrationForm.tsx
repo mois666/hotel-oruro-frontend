@@ -127,7 +127,7 @@ export const GuestRegistrationForm = () => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="flex flex-col gap-2">
               <label htmlFor="documentId">CI/DNI</label>
-              <Input isRequired type="text" id="documentId" name="documentId" onChange={(e) => setFormData({ ...formData, documentId: e.target.value })} />
+              <Input isRequired type="number" id="documentId" name="documentId" onChange={(e) => setFormData({ ...formData, documentId: e.target.value })} />
             </div>
 
 
@@ -216,6 +216,7 @@ export const GuestRegistrationForm = () => {
             <div className="flex flex-col">
               <span className="mb-2 text-sm font-medium">Sub Total</span>
               <div className="px-3 py-2 h-10 font-semibold rounded-md border border-input bg-background text-foreground">
+              {/*<Input type="number" id="discount" name="discount" defaultValue={total.toFixed(2)} />*/}
                 {total.toFixed(2)} Bs
               </div>
             </div>
